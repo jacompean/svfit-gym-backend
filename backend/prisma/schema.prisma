@@ -1,0 +1,13 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "sqlite" ; url = env("DATABASE_URL") }
+enum Role { ADMIN COACH USER }
+model User { id String @id @default(cuid()) email String @unique password String firstName String lastName String role Role createdAt DateTime @default(now()) updatedAt DateTime @updatedAt }
+model Plan { id String @id @default(cuid()) planId String @unique name String price Float billing String access String duration Int active Boolean @default(true) }
+model Member { id String @id @default(cuid()) memberId String @unique firstName String lastName String email String? phone String? status String @default("active") planId String? notes String? createdAt DateTime @default(now()) }
+model Trainer { id String @id @default(cuid()) trainerId String @unique firstName String lastName String phone String? email String? specialty String? active Boolean @default(true) userId String? }
+model GymClass { id String @id @default(cuid()) classId String @unique name String weekday String startTime String endTime String capacity Int location String? active Boolean @default(true) trainerId String? }
+model Booking { id String @id @default(cuid()) bookingId String @unique memberId String classId String date String status String @default("booked") attended Boolean? }
+model Attendance { id String @id @default(cuid()) checkinId String @unique memberId String timestampIn String timestampOut String? method String @default("QR") }
+model Payment { id String @id @default(cuid()) paymentId String @unique memberId String date String amount Float method String concept String planId String? periodStart String? periodEnd String? status String @default("paid") invoiceFolio String? }
+model Expense { id String @id @default(cuid()) expenseId String @unique date String category String amount Float method String notes String? }
+model Inventory { id String @id @default(cuid()) itemId String @unique name String category String quantity Int reorderPoint Int unit String location String? }

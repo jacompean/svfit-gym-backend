@@ -1,0 +1,13 @@
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import authRoutes from './routes/auth.js';
+import crudRoutes from './routes/crud.js';
+const app = express();
+app.use(cors({ origin: (process.env.CORS_ORIGIN||'*').split(',') }));
+app.use(express.json());
+app.get('/', (req,res)=> res.send({ ok:true, service:'gym-backend' }));
+app.use('/api/auth', authRoutes);
+app.use('/api', crudRoutes);
+const port = process.env.PORT || 4000;
+app.listen(port, ()=> console.log(`API on http://localhost:${port}`));
